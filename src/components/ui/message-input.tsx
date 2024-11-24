@@ -1,11 +1,12 @@
 import React, { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUp, FileIcon, Paperclip, Square, X } from "lucide-react";
+import { ArrowUp, FileIcon, Paperclip, Plus, Square, X } from "lucide-react";
 import { omit } from "remeda";
 
 import { cn } from "@/lib/utils";
 import { useAutosizeTextArea } from "@/hooks/use-autosize-textarea";
 import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 
 interface MessageInputBaseProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -121,41 +122,7 @@ export function MessageInput({
           : omit(props, ["allowAttachments"]))}
       />
 
-      {props.allowAttachments && (
-        <div className="absolute inset-x-3 bottom-0 overflow-x-scroll py-3">
-          <div className="flex space-x-3">
-            <AnimatePresence mode="popLayout">
-              {props.file && (
-                <FilePreview
-                  key={props.file.name + String(props.file.lastModified)}
-                  file={props.file}
-                  onRemove={() => {
-                    props.setFile(null);
-                  }}
-                />
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-      )}
-
       <div className="absolute right-3 top-3 flex gap-2">
-        {props.allowAttachments && (
-          <Button
-            type="button"
-            size="icon"
-            variant="outline"
-            className="h-8 w-8"
-            aria-label="Attach a file"
-            disabled={isGenerating}
-            onClick={async () => {
-              const file = await showFileUploadDialog();
-              addFiles(file);
-            }}
-          >
-            <Paperclip className="h-4 w-4" />
-          </Button>
-        )}
         {isGenerating && stop ? (
           <Button
             type="button"
@@ -177,6 +144,11 @@ export function MessageInput({
             <ArrowUp className="h-5 w-5" />
           </Button>
         )}
+        <Link to="/ask">
+          <Button variant={"ghost"} className="h-8 w-8" type="button">
+            <Plus width={18} />
+          </Button>
+        </Link>
       </div>
 
       {props.allowAttachments && <FileUploadOverlay isDragging={isDragging} />}

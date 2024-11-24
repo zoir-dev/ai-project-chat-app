@@ -49,8 +49,6 @@ export default function Home() {
     }
   }
 
-  console.log(data)
-
   return (
     <>
       <div className="container mx-auto flex flex-col justify-end h-screen py-2 pt-8">
